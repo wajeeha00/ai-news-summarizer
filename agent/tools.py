@@ -4,13 +4,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def get_search_tool():
+def get_search_tool(max_results: int = 5):
     """
     TavilySearchResults is a pre-built LangChain tool.
     max_results=5 means fetch top 5 articles per search.
     """
+ 
     search_tool = TavilySearchResults(
-        max_results=5,
+        max_results=max_results,
         search_depth="advanced",     # deeper search, better results
         include_answer=True,         # Tavily gives a quick answer too
         include_raw_content=True,    # full article content, not just snippet
