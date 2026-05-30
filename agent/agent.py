@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from agent.tools import get_search_tool
 from agent.summarizer import get_summarizer_chain
 
-def fetch_and_summarize_news(days: int = 1):
+def fetch_and_summarize_news(days: int = 1, articles_per_day: int = 4):
     """
     Main function:
     1. Build date-based search queries
@@ -11,13 +11,13 @@ def fetch_and_summarize_news(days: int = 1):
     4. Return structured results
     """
 
-    search_tool = get_search_tool()
+    search_tool = get_search_tool(articles_per_day)
     summarizer = get_summarizer_chain()
 
     results_by_day = {}
 
     for i in range(days):
-        target_date = datetime.now() - timedelta(days=1)
+        target_date = datetime.now() - timedelta(days=i)
         date_str = target_date.strftime("%Y-%m-%d")
         display_date = target_date.strftime("%d %B, %Y")
 
@@ -29,7 +29,7 @@ def fetch_and_summarize_news(days: int = 1):
     # raw_results is a list of dicts with: url, title, content, score
     articles = []
 
-    for article in raw_results[:4]:  # top 4 articles per day
+    for article in raw_results[:articles_per_day]:  
         title = article.get("title", "No title")
         content = article.get("content", "")
         url = article.get("url", "")
